@@ -2,7 +2,10 @@
   "version": "0.2",
   "ignorePaths": [],
   "words": [
+    "cond",
+    "gtin",
     "hunterparcells",
+    "isnan",
     "nestjs",
     "Parens"
   ]
