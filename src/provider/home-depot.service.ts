@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-
-import { randomOf } from '../util/array';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
+
+import { randomOf } from '../util/array';
 
 function randomNumber() {
   const prefix = randomOf(['10', '20', '21', '30', '31', '32', '33']);
