@@ -1,4 +1,5 @@
 import { Controller, Get, Res } from '@nestjs/common';
+import { Response } from 'express';
 
 import { OtherzoneService } from 'src/provider/otherzone.service';
 
@@ -7,7 +8,7 @@ export class OtherzoneController {
   constructor(private readonly otherzoneService: OtherzoneService) {}
 
   @Get('random')
-  async gotoRandomUrl(@Res() res) {
+  async gotoRandomUrl(@Res() res: Response) {
     const randomUrl = await this.otherzoneService.getRandomUrl();
     
     res.redirect(randomUrl);

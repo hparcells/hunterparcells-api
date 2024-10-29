@@ -17,8 +17,28 @@ export class HomeDepotService {
   getRandomId(): string {
     return randomNumber();
   }
-  getRandomUrl(): string {
+
+  generateRandomUrl(): string {
     return `https://www.homedepot.com/p/${randomNumber()}`;
+  }
+
+  async getRandomUrl(): Promise<string> {
+    let url;
+    let status;
+
+    do {
+      const requests = Array.from({ length: 10 }, () => {
+        return this.httpService.get(this.generateRandomUrl());
+      }).map((request) => firstValueFrom(request));
+      
+      await Promise.any(requests).then((result) => {
+        url = result.config.url;
+        status = result.status;
+        return result;
+      }).catch((error) => error);
+    }while(status !== 200);
+
+    return url;
   }
 
   async getProductInfo(id: string) {
@@ -27,6 +47,13 @@ export class HomeDepotService {
       validateStatus: (status) => true
     });
     const response = await firstValueFrom(data);
+    if(response.status !== 200) {
+      return {
+        id,
+        error: 'Product not found'
+      };
+    }
+    
     const content = response.data;
 
     const jsonScript = content.match(/thd-helmet__script--productStructureData">(.*)<\/script>/)[1];
