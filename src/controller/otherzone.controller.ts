@@ -23,14 +23,4 @@ export class OtherzoneController {
     
     response.data.pipe(res);
   }
-  
-  // @Get('random-item')
-  // async getRandomItem(): Promise<string> {
-  //   return await this.otherzoneService.getRandomItem();
-  // }
-  
-  // @Get('random-url')
-  // async getRandomUrl(): Promise<string> {
-  //   return await this.otherzoneService.getRandomUrl();
-  // }
 }
