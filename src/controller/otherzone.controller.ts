@@ -1,8 +1,6 @@
-import { Controller, Get, Header, Query, Res, StreamableFile } from '@nestjs/common';
-import { firstValueFrom } from 'rxjs';
+import { Controller, Get, Header, Query } from '@nestjs/common';
 
 import { OtherzoneService } from '../provider/otherzone.service';
-import { Response } from 'express';
 
 @Controller('otherzone')
 export class OtherzoneController {
@@ -10,7 +8,7 @@ export class OtherzoneController {
 
   @Get('random')
   @Header('Content-Disposition', 'inline')
-  async sendRandom(@Query('type') type, @Res({ passthrough: true }) res: Response) {
+  async sendRandom(@Query('type') type) {
     if(type && !this.otherzoneService.isOtherzoneType(type)) {
       return 'Invalid type.';
     }

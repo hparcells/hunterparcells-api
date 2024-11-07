@@ -37,7 +37,7 @@ export class OtherzoneService {
         acc[type] = 1;
       }
       return acc;
-    }, {} as Record<OtherzoneType, number>);
+    }, {} as Record<string, number>);
 
     return {
       count: items.length,
