@@ -11,8 +11,19 @@ import { HomeDepotService } from './provider/home-depot.service';
 import { OtherzoneService } from './provider/otherzone.service';
 
 @Module({
-  imports: [ConfigModule.forRoot(), HttpModule],
-  controllers: [RootController, HomeDepotController, OtherzoneController],
-  providers: [RootService, HomeDepotService, OtherzoneService],
+  imports: [
+    ConfigModule.forRoot(),
+    HttpModule
+  ],
+  controllers: [
+    RootController,
+    HomeDepotController,
+    OtherzoneController
+  ],
+  providers: [
+    RootService,
+    HomeDepotService,
+    OtherzoneService
+  ],
 })
 export class AppModule {}

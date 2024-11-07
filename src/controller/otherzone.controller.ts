@@ -1,26 +1,27 @@
-import { HttpService } from '@nestjs/axios';
-import { Controller, Get, Req, Res } from '@nestjs/common';
-import { Response } from 'express';
+import { Controller, Get, Header, Query, Res, StreamableFile } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 
 import { OtherzoneService } from '../provider/otherzone.service';
+import { Response } from 'express';
 
 @Controller('otherzone')
 export class OtherzoneController {
-  constructor(private readonly httpService: HttpService, private readonly otherzoneService: OtherzoneService) {}
+  constructor(private readonly otherzoneService: OtherzoneService) {}
 
   @Get('random')
-  async sendRandom(@Req() req, @Res() res: Response) {
-    const randomUrl = await this.otherzoneService.getRandomUrl();
-    const request = this.httpService.get(randomUrl, { responseType: 'stream' });
-    const response = await firstValueFrom(request);
+  @Header('Content-Disposition', 'inline')
+  async sendRandom(@Query('type') type, @Res({ passthrough: true }) res: Response) {
+    if(type && !this.otherzoneService.isOtherzoneType(type)) {
+      return 'Invalid type.';
+    }
 
-    res.setHeader('Content-Disposition', 'inline');
-    res.setHeader('Content-Type', response.headers['content-type']);
-    res.setHeader('Cache-Control', 'no-cache');
+    const file = await this.otherzoneService.getRandomStreamableFile(type);
 
-    console.log('Sending from', randomUrl);
-    
-    response.data.pipe(res);
+    return file;
+  }
+
+  @Get('stats')
+  async getStats() {
+    return await this.otherzoneService.getStats();
   }
 }
