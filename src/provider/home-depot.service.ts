@@ -34,6 +34,7 @@ export class HomeDepotService {
       });
 
       await Promise.any(requests)
+        // eslint-disable-next-line no-loop-func
         .then((result) => {
           url = result.config.url;
           status = result.status;
