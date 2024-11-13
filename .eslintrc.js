@@ -1,15 +1,19 @@
-{
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": "tsconfig.json",
-    "sourceType": "module"
+module.exports = {
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    project: 'tsconfig.json',
+    tsconfigRootDir: __dirname,
+    sourceType: 'module',
   },
-  "plugins": ["prettier"],
-  "env": {
-    "node": true,
-    "jest": true
+  plugins: ['prettier'],
+  extends: [],
+  root: true,
+  env: {
+    node: true,
+    jest: true,
   },
-  "rules": {
+  ignorePatterns: ['.eslintrc.js'],
+  rules: {
     "prettier/prettier": "error",
     "for-direction": "error",
     "getter-return": "error",
@@ -39,7 +43,7 @@
     "grouped-accessor-pairs": ["error", "getBeforeSet"],
     "no-alert": "warn",
     "no-else-return": ["error", { "allowElseIf": false }],
-    "no-empty-function": "error",
+    "no-empty-function": ["error", { "allow": ["constructors"] }],
     "no-floating-decimal": "error",
     "no-labels": "error",
     "no-lone-blocks": "error",
@@ -61,9 +65,8 @@
     "no-dupe-class-members": "error",
     "no-duplicate-imports": "error",
     "no-this-before-super": "error",
-    "no-useless-constructor": "error",
     "no-var": "error",
     "prefer-const": "error",
     "prefer-template": "error"
   }
-}
+};

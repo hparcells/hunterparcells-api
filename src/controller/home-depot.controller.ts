@@ -6,15 +6,18 @@ import { HomeDepotService } from '../provider/home-depot.service';
 
 @Controller('home-depot')
 export class HomeDepotController {
-  constructor(private readonly homeDepotService: HomeDepotService, private readonly httpService: HttpService) {}
+  constructor(
+    private readonly homeDepotService: HomeDepotService,
+    private readonly httpService: HttpService
+  ) {}
 
   @Get('random')
   async gotoRandom(@Res() res: Response) {
     const url = await this.homeDepotService.getRandomUrl();
-    
+
     res.redirect(url);
   }
-  
+
   @Get('random-url')
   async getRandomUrl(): Promise<string> {
     return await this.homeDepotService.getRandomUrl();
@@ -24,7 +27,7 @@ export class HomeDepotController {
   async getRandomProduct() {
     const url = await this.getRandomUrl();
     const id = url.split('/').pop();
-    
+
     return this.homeDepotService.getProductInfo(id);
   }
 

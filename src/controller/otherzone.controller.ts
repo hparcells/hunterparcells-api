@@ -9,7 +9,7 @@ export class OtherzoneController {
   @Get('random')
   @Header('Content-Disposition', 'inline')
   async sendRandom(@Query('type') type) {
-    if(type && !this.otherzoneService.isOtherzoneType(type)) {
+    if (type && !this.otherzoneService.isOtherzoneType(type)) {
       return 'Invalid type.';
     }
 

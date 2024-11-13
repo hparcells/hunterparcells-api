@@ -6,8 +6,8 @@ import { randomOf } from '../util/array';
 
 function randomNumber() {
   const prefix = randomOf(['10', '20', '21', '30', '31', '32', '33']);
-  
-  return prefix + ((Math.random() * 1e7).toFixed(0).padStart(7, '0')).toString()
+
+  return prefix + (Math.random() * 1e7).toFixed(0).padStart(7, '0').toString();
 }
 
 @Injectable()
@@ -29,14 +29,20 @@ export class HomeDepotService {
     do {
       const requests = Array.from({ length: 10 }, () => {
         return this.httpService.get(this.generateRandomUrl());
-      }).map((request) => firstValueFrom(request));
-      
-      await Promise.any(requests).then((result) => {
-        url = result.config.url;
-        status = result.status;
-        return result;
-      }).catch((error) => error);
-    }while(status !== 200);
+      }).map((request) => {
+        return firstValueFrom(request);
+      });
+
+      await Promise.any(requests)
+        .then((result) => {
+          url = result.config.url;
+          status = result.status;
+          return result;
+        })
+        .catch((error) => {
+          return error;
+        });
+    } while (status !== 200);
 
     return url;
   }
@@ -44,16 +50,18 @@ export class HomeDepotService {
   async getProductInfo(id: string) {
     const url = `https://www.homedepot.com/p/${id}`;
     const data = this.httpService.get(url, {
-      validateStatus: (status) => true
+      validateStatus: (status) => {
+        return true;
+      }
     });
     const response = await firstValueFrom(data);
-    if(response.status !== 200) {
+    if (response.status !== 200) {
       return {
         id,
         error: 'Product not found'
       };
     }
-    
+
     const content = response.data;
 
     const jsonScript = content.match(/thd-helmet__script--productStructureData">(.*)<\/script>/)[1];
@@ -73,11 +81,11 @@ export class HomeDepotService {
       brand: {
         '@type': 'Brand';
         name: string;
-      },
+      };
       review: {
-        '@type': 'Review',
+        '@type': 'Review';
         reviewRating: {
-          '@type': 'Rating',
+          '@type': 'Rating';
           ratingValue: number;
           bestRating: string;
         };
@@ -87,7 +95,7 @@ export class HomeDepotService {
         };
         headline: string | null;
         reviewBody: string;
-      }[]
+      }[];
     } = JSON.parse(jsonScript);
 
     return {
