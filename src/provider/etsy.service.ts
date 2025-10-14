@@ -40,4 +40,14 @@ export class EtsyService {
 
     return shortened;
   }
+
+  async shortenDescription(description: string): Promise<string> {
+    const shortened = await this.getAiCompletion(
+      'Shorten the description of an e-commerce store item for convenient display.',
+      description,
+      'ft:gpt-3.5-turbo-0125:personal:description:B2i3AfNj'
+    );
+
+    return shortened;
+  }
 }

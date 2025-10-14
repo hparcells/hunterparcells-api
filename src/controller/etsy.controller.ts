@@ -39,4 +39,32 @@ export class EtsyController {
 
     return this.etsyService.shortenName(body.name);
   }
+
+  @Post('shorten-description')
+  async shortenDescription(
+    @Body()
+    body: {
+      description: string;
+    },
+    @Headers('X-Etsy-Key') key: Headers
+  ) {
+    if (!key) {
+      return {
+        error: 'Missing "X-Etsy-Key" header.'
+      };
+    }
+    if (key !== this.configService.get('MASTER_ETSY_API_KEY')) {
+      return {
+        error: 'Invalid "X-Etsy-Key" header.'
+      };
+    }
+
+    if (!body.description) {
+      return {
+        error: 'Missing "name" field in request body.'
+      };
+    }
+
+    return this.etsyService.shortenDescription(body.description);
+  }
 }
