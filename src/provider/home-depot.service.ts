@@ -22,6 +22,8 @@ export class HomeDepotService {
     return `https://www.homedepot.com/p/${randomNumber()}`;
   }
 
+  goodUrls = [];
+
   async getRandomUrl(): Promise<string> {
     let url;
     let status;
@@ -46,6 +48,29 @@ export class HomeDepotService {
     } while (status !== 200);
 
     return url;
+  }
+
+  async queueMore(): Promise<void> {
+    for (let i = 0; i < 20; i++) {
+      this.goodUrls.push(await this.getRandomUrl());
+    }
+  }
+
+  async nextRandomUrl(): Promise<{
+    url: string;
+    queueMore: boolean;
+  }> {
+    let url;
+    if (this.goodUrls.length > 0) {
+      url = this.goodUrls.shift();
+    } else {
+      url = await this.getRandomUrl();
+    }
+
+    return {
+      url,
+      queueMore: this.goodUrls.length < 10
+    };
   }
 
   async getProductInfo(id: string) {

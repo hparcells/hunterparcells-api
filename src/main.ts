@@ -1,3 +1,4 @@
+import * as http from 'http';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app.module';

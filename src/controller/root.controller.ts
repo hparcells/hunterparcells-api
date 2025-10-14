@@ -8,6 +8,7 @@ export class RootController {
 
   @Get()
   getHello(): string {
+    console.log('j');
     return this.appService.getHello();
   }
 }
