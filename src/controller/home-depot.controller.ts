@@ -15,12 +15,9 @@ export class HomeDepotController {
   async gotoRandom(@Res() res: Response) {
     const { url, queueMore } = await this.homeDepotService.nextRandomUrl();
 
-    console.log(url);
-
     res.redirect(url);
 
     if (queueMore) {
-      console.log('getting more');
       await this.homeDepotService.queueMore();
     }
   }
